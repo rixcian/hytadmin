@@ -2,6 +2,7 @@ const colors = require('colors');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
 
 const User = mongoose.model('users');
 
@@ -10,20 +11,24 @@ passport.serializeUser((user, cb) => {
 });
 
 passport.deserializeUser((id, cb) => {
-  User.findById(id)
-  .then((err, user) => {
-    if (err) return cb(err);
+  User.findOne({ _id: id })
+  .select('-_id email')
+  .then(user => {
     cb(null, user);
   })
 });
 
-passport.use(new LocalStrategy(
+passport.use(new LocalStrategy({
+    usernameField: 'email',
+    passwordField: 'password'
+  },
   (email, password, cb) => {
     User.findOne({ email })
-    .then((err, user) => {
-      if (err) return cb(err);
+    .then(user => {
       if (!user) return cb(null, false);
-      if (user.password !== password) return cb(null, false);
-      return cb(null, user);
+      bcrypt.compare(password, user.password, (err, res) => {
+        if (!res) return cb(null, false);
+        return cb(null, user);
+      });
     });
 }));
