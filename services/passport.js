@@ -12,7 +12,7 @@ passport.serializeUser((user, cb) => {
 
 passport.deserializeUser((id, cb) => {
   User.findOne({ _id: id })
-  .select('-_id email')
+  .select('_id email')
   .then(user => {
     cb(null, user);
   })
@@ -22,13 +22,16 @@ passport.use(new LocalStrategy({
     usernameField: 'email',
     passwordField: 'password'
   },
-  (email, password, cb) => {
+  (email, password, done) => {
     User.findOne({ email })
+    .select('_id email password')
     .then(user => {
-      if (!user) return cb(null, false);
+      if (!user) return done(null, false, { email: 'Uživatel s touto emailovou adresou není zaregistrován' });
       bcrypt.compare(password, user.password, (err, res) => {
-        if (!res) return cb(null, false);
-        return cb(null, user);
+        if (!res) return done(null, false, { password: 'Zadali jste špatné heslo' });
+        user = user.toObject();
+        delete user.password;
+        return done(null, new User(user));
       });
     });
 }));

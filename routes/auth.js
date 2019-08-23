@@ -16,11 +16,23 @@ module.exports = app => {
     });
   });
 
-  app.post('/api/login', passport.authenticate('local'), (req, res) => {
-    res.redirect('/');
-  })
+  app.post('/api/login', (req, res, next) => {
+    passport.authenticate('local', (err, user, info) => {
+      if (err) { return next(err); }
+      if (!user) { return res.status(401).send(info); }
+      req.login(user, (err) => {
+        if (err) { console.log('login err'); return next(err); }
+        return res.send(user);
+      })
+    })(req, res, next)
+  });
+
+  app.get('/api/logout', (req, res) => {
+    req.logout();
+    res.status(200).send();
+  });
 
   app.get('/api/current_user', (req, res) => {
     res.send(req.user);
-  })
+  });
 }
