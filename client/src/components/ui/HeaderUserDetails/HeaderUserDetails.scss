@@ -1,0 +1,33 @@
+.cp-header-userdetails {
+  .dropdown-menu {
+    display: block;
+  }
+
+  .bg-gradient-dark {
+    background-image: linear-gradient(135deg, #111111, #555555);
+    background-repeat: repeat-x;
+  }
+
+  .dt-avatar-info {
+    margin: 5px 0 0 10px;
+  }
+
+  .dropdown-item {
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &:hover {
+      cursor: pointer;
+    }
+
+    .dropdown-item-info {
+      margin: 2px 0 0 5px;
+    }
+  }
+
+  .dt-nav__link:hover {
+    cursor: pointer;
+  }
+}

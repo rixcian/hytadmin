@@ -1,0 +1,14 @@
+.cp-header-notifications {
+  .dropdown-menu {
+    display: block;
+  }
+
+  .dt-nav__link:hover {
+    cursor: pointer;
+  }
+
+  .dropdown-menu-body {
+    height: auto !important;
+    max-height: 208px;
+  }
+}

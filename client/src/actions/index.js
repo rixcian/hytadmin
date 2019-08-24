@@ -6,16 +6,7 @@ export const fetchUser = () => dispatch => {
   .then(res => {
     dispatch({ type: FETCH_USER, payload: res.data });
   });
-}
-
-// export const authUser = values => dispatch => {
-//   axios.post('/api/login', values)
-//   .then(res => {
-//     console.log('Succ', res);
-//     dispatch({ type: FETCH_USER, payload: res.data });
-//   })
-//   .catch(err => console.log('Muj err', err));
-// }
+};
 
 export const authUser = values => dispatch => {
   return new Promise((resolve, reject) => {
@@ -26,12 +17,11 @@ export const authUser = values => dispatch => {
     })
     .catch(err => reject(err));
   })
-}
+};
 
 export const logoutUser = () => dispatch => {
   axios.get('/api/logout')
   .then(() => {
-    console.log('finished');
-    //dispatch({ type: FETCH_USER, payload: null });
+    dispatch({ type: FETCH_USER, payload: null });
   })
-}
+};

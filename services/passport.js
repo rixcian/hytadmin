@@ -12,7 +12,7 @@ passport.serializeUser((user, cb) => {
 
 passport.deserializeUser((id, cb) => {
   User.findOne({ _id: id })
-  .select('_id email')
+  .select('_id email username')
   .then(user => {
     cb(null, user);
   })
@@ -24,7 +24,7 @@ passport.use(new LocalStrategy({
   },
   (email, password, done) => {
     User.findOne({ email })
-    .select('_id email password')
+    .select('_id email username password')
     .then(user => {
       if (!user) return done(null, false, { email: 'Uživatel s touto emailovou adresou není zaregistrován' });
       bcrypt.compare(password, user.password, (err, res) => {
