@@ -16,7 +16,10 @@ const articleSchema = new Schema({
     default: new Date()
   },
   author: { type: Schema.Types.ObjectId, ref: 'User' },
-  updatedAt: Date
+  updatedAt: {
+    type: Date,
+    default: null
+  }
 });
 
-mongoose.model('articles', articleSchema);
+mongoose.model('Article', articleSchema);

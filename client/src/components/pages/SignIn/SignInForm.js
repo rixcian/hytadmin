@@ -22,9 +22,8 @@ class SignInForm extends React.Component {
     this.props
       .authUser(values)
       .catch(err => {
-        const { data } = err.response;
         actions.setSubmitting(false);
-        actions.setFieldError(Object.keys(data)[0], data[Object.keys(data)[0]]);
+        actions.setFieldError(Object.keys(err)[0], err[Object.keys(err)[0]]);
       });
   };
 
@@ -81,5 +80,5 @@ class SignInForm extends React.Component {
 
 export default connect(
   null,
-  actions
+  actions.default
 )(SignInForm);

@@ -30,6 +30,7 @@ app.use(passport.session());
 require('./services/passport');
 require('./routes/auth')(app);
 require('./routes/article')(app);
+require('./routes/user')(app);
 
 app.get('/', (req, res) => {
   res.send('Hello World');

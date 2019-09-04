@@ -8,7 +8,7 @@ import logoPNG from '../../../assets/img/logo/logo.png';
 
 import('./Header.scss');
 
-class Header extends React.Component {
+class Index extends React.Component {
   render() {
     return (
       <header className="dt-header cp-header">
@@ -46,4 +46,4 @@ class Header extends React.Component {
   }
 }
 
-export default Header;
+export default Index;

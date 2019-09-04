@@ -10,10 +10,24 @@ const UserSchema = new Schema({
     type: String,
     required: true
   },
+  role: {
+    type: String,
+    required: true
+  },
   password: {
     type: String,
     required: true
+  },
+  createdAt: {
+    type: Date,
+    required: true,
+    default: new Date()
+  },
+  active: {
+    type: Boolean,
+    required: true,
+    default: true
   }
 });
 
-mongoose.model('users', UserSchema);
+mongoose.model('User', UserSchema);

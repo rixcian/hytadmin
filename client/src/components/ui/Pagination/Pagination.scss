@@ -1,0 +1,17 @@
+.cp-pagination {
+  .page-link {
+    color: #444444;
+
+    &:hover {
+      color: #111111;
+      text-decoration: underline;
+    }
+  }
+
+  .page-link-active {
+      color: #111111;
+      background-color: #e9ecef;
+      border-color: #dee2e6;
+      text-decoration: underline;
+  }
+}

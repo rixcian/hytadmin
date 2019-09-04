@@ -1,0 +1,32 @@
+.page-editor-loading {
+  height: 50vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.page-editor {
+  .profile__banner {
+    background-color: #555555;
+  }
+
+  .dt-list__item {
+    width: auto !important;
+  }
+
+  .profile__banner {
+    background-color: transparent !important;
+    background-size: cover;
+    background-position: center;
+
+    &::before { background-color: rgba(0,0,0,0.5); }
+  }
+}
+
+.webp .profile__banner {
+  background-image: url('../../../assets/img/backgrounds/editor_detail_background.webp');
+}
+
+.no-webp .profile__banner {
+  background-image: url('../../../assets/img/backgrounds/editor_detail_background.jpg');
+}
