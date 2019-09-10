@@ -1,4 +1,14 @@
+.sb-closed {
+  left: -240px;
+}
+
+.sb-opened {
+  left: 0;
+}
+
 .cp-sidebar {
+
+  position: relative;
 
   a {
     color: #545454;
@@ -21,5 +31,38 @@
   .dt-side-nav__link:hover {
     cursor: pointer;
     color: #000000;
+  }
+}
+
+@media only screen and (min-width: 0px) {
+  #main-sidebar {
+    -webkit-transition: all .15s ease-in-out;
+    -moz-transition: all .15s ease-in-out;
+    -o-transition: all .15s ease-in-out;
+    transition: all .15s ease-in-out
+  }
+
+  .dt-sidebar--fixed .dt-sidebar {
+    height: calc(100vh - 55px) !important;
+  }
+
+  .dt-sidebar--fixed .dt-sidebar+.dt-content-wrapper {
+    margin-left: 0 !important;
+  }
+}
+
+@media only screen and (min-width: 1200px) {
+  .dt-sidebar--fixed .dt-sidebar+.dt-content-wrapper {
+    margin-left: 240px !important;
+  }
+}
+
+@media only screen and (min-width: 1367px) {
+  .dt-sidebar--fixed .dt-sidebar+.dt-content-wrapper {
+    margin-left: 280px !important;
+  }
+
+  .sb-closed {
+    left: -280px;
   }
 }

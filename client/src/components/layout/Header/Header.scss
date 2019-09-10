@@ -7,3 +7,20 @@
     width: 90px;
   }
 }
+
+@media only screen and (min-width: 0px) {
+  .cp-header {
+    .dt-brand__logo {
+      position: absolute;
+      right: 40vw;
+    }
+  }
+}
+
+@media only screen and (min-width: 768px) {
+  .cp-header {
+    .dt-brand__logo {
+      position: initial;
+    }
+  }
+}

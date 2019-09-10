@@ -30,3 +30,10 @@
 .no-webp .profile__banner {
   background-image: url('../../../assets/img/backgrounds/editor_detail_background.jpg');
 }
+
+@media only screen and (min-width: 0px) {
+  .profile__banner .dt-list {
+    display: flex;
+    justify-content: center;
+  }
+}

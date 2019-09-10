@@ -18,7 +18,7 @@ class EditorDetail extends React.Component {
     editor: {},
     isFetching: true,
     articlesSkip: 0,
-    articlesLimit: 1,
+    articlesLimit: 10,
     activePage: 1,
     numberOfPages: 1
   };

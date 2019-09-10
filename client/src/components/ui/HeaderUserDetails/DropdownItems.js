@@ -1,9 +1,12 @@
 import React from 'react';
+
+import { Link } from 'react-router-dom';
+
 import userIconWEBP from "../../../assets/img/user_icons/rixcian_icon.webp";
 import userIconPNG from "../../../assets/img/user_icons/rixcian_icon.png";
 
 export default (props) => {
-  const { username, role } = props.user;
+  const { username, role, _id } = props.user;
 
   return (
     <div className="dropdown-menu dropdown-menu-right">
@@ -18,10 +21,10 @@ export default (props) => {
           <span className="f-12 text-light-gray text-capitalize">{role}</span>
         </span>
       </div>
-      <div className="dropdown-item">
+      <Link to={`/editors/${_id}`} className="dropdown-item">
         <i className="icon icon-user-o icon-fw mr-2 mr-sm-1"/>
         <span className="dropdown-item-info">Profil</span>
-      </div>
+      </Link>
       <div className="dropdown-item">
         <i className="icon icon-setting icon-fw mr-2 mr-sm-1"/>
         <span className="dropdown-item-info">Nastavení</span>
