@@ -1,7 +1,5 @@
 const requireLogin = require('../middlewares/requireLogin');
 const mongoose = require('mongoose');
-const multer = require('multer');
-const upload = multer({ dest: '../uploads/thumbnails/' });
 
 const Article = mongoose.model('Article');
 
@@ -9,21 +7,18 @@ module.exports = app => {
 
   app.post('/api/articles', requireLogin, async (req, res) => {
 
-    const { title, content } = req.body;
+    const { title, content, thumbnailImagePath, coverImagePath } = req.body;
     
     await new Article({
       title,
+      thumbnailImagePath,
+      coverImagePath,
       author: req.user.id,
       content
     }).save();
 
     res.status(201).send();
 
-  });
-
-  app.post('/api/articles/thumbnail', requireLogin,
-    upload.single('thumbnail'), (req, res) => {
-      res.send('success');
   });
 
 
@@ -77,7 +72,7 @@ module.exports = app => {
 
     Article.findOne({ _id: articleID })
     .populate('author', '_id username')
-    .select('-_id title content')
+    .select('-_id -createdAt -updatedAt -__v')
     .then((article) => {
       if (!article) return res.status(404).send({ err: 'Článek nebyl v databázi nalezen' });
       res.status(200).send(article);
@@ -89,9 +84,10 @@ module.exports = app => {
   app.put('/api/articles/:articleID', requireLogin, (req, res) => {
 
     const { articleID } = req.params;
-    const { title, content } = req.body;
+    const { title, content, thumbnailImagePath, coverImagePath } = req.body;
 
-    Article.findOneAndUpdate({ _id: articleID }, { title, content, updatedAt: new Date() })
+    Article.findOneAndUpdate({ _id: articleID },
+    { title, content, thumbnailImagePath, coverImagePath , updatedAt: new Date() })
     .then(() => res.status(204).send())
     .catch(err => res.status(500).send({ err }));
 

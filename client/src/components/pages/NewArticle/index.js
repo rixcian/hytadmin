@@ -3,12 +3,20 @@ import CKEditor from 'ckeditor4-react';
 import axios from 'axios';
 import { notification } from 'antd';
 
+import UploadThumbnails from '../../ui/UploadThumbnails';
+
 class NewArticle extends React.Component {
 
   state = {
     title: '',
-    content: ''
+    content: '',
+    thumbnailImagePath: '',
+    coverImagePath: ''
   };
+
+  setImageThumbnailPath = path => this.setState({ thumbnailImagePath: path });
+
+  setImageCoverPath = path => this.setState({ coverImagePath: path });
 
   saveArticle = () => {
     axios.post('/api/articles', this.state)
@@ -50,28 +58,13 @@ class NewArticle extends React.Component {
                 autoFocus />
             </div>
 
-            <form onSubmit={(e) => {
-              e.preventDefault();
-              let formData = new FormData();
-              const imageFile = document.querySelector('#thumbnailFile');
-              formData.append('image', imageFile.files[0]);
-              axios.post('/api/articles/thumbnail', formData)
-              .then(res => console.log(res.data))
-              .catch(err => console.log(err));
-            }}>
-              <div className="form-group">
-                <label htmlFor="email-1">Náhledové obrázky</label>
-                <div className="input-group mb-3">
-                  <div className="custom-file">
-                    <input type="file" className="custom-file-input" id="thumbnailFile" />
-                    <label className="custom-file-label" htmlFor="inputGroupFile02">Vybrat soubor ...</label>
-                  </div>
-                </div>
-                <div className="input-group mb-3">
-                  <button type="submit" className="btn btn-dark mr-2 mb-2">Odeslat</button>
-                </div>
-              </div>
-            </form>
+            <div className="form-group">
+              <label>Náhledové obrázky</label>
+              <UploadThumbnails
+                setImageThumbnailPath={path => this.setImageThumbnailPath(path)}
+                setImageCoverPath={path => this.setImageCoverPath(path)}
+              />
+            </div>
 
             <div className="form-group">
               <label htmlFor="email-1">Obsah</label>

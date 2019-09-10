@@ -31,6 +31,9 @@ require('./services/passport');
 require('./routes/auth')(app);
 require('./routes/article')(app);
 require('./routes/user')(app);
+require('./routes/upload')(app);
+
+app.use('/api/uploads', express.static('uploads'));
 
 app.get('/', (req, res) => {
   res.send('Hello World');

@@ -10,6 +10,14 @@ const articleSchema = new Schema({
     type: String,
     required: true
   },
+  thumbnailImagePath: {
+    type: String,
+    required: false
+  },
+  coverImagePath: {
+    type: String,
+    required: false
+  },
   createdAt: {
     type: Date,
     required: true,

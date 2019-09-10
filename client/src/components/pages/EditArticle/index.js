@@ -2,21 +2,28 @@ import React from 'react';
 import CKEditor from 'ckeditor4-react';
 import axios from 'axios';
 import { notification, Icon } from 'antd';
+import UploadThumbnails from "../../ui/UploadThumbnails";
 
 class EditArticle extends React.Component {
 
   state = {
     title: '',
     content: '',
+    thumbnailImagePath: '',
+    coverImagePath: '',
     isFetching: true
   };
+
+  setImageThumbnailPath = path => this.setState({ thumbnailImagePath: path });
+
+  setImageCoverPath = path => this.setState({ coverImagePath: path });
 
   componentDidMount() {
     console.log(this.props.match.params.id);
     axios.get(`/api/articles/${this.props.match.params.id}`)
     .then(res => {
-      const { title, content } = res.data;
-      this.setState({ title, content, isFetching: false });
+      const { title, content, thumbnailImagePath, coverImagePath } = res.data;
+      this.setState({ title, content, thumbnailImagePath, coverImagePath, isFetching: false });
     })
     .catch(err => {
       notification['error']({
@@ -29,8 +36,9 @@ class EditArticle extends React.Component {
   }
 
   saveArticle = () => {
-    const { title, content } = this.state;
-    axios.put(`/api/articles/${this.props.match.params.id}`, { title, content })
+    const { title, content, thumbnailImagePath, coverImagePath } = this.state;
+    axios.put(`/api/articles/${this.props.match.params.id}`,
+      { title, content, thumbnailImagePath, coverImagePath })
       .then(() => {
         notification['success']({
           message: 'Článek byl úspěšně upraven',
@@ -80,13 +88,14 @@ class EditArticle extends React.Component {
               </div>
 
               <div className="form-group">
-                <label htmlFor="email-1">Náhledové obrázky</label>
-                <div className="input-group mb-3">
-                  <div className="custom-file">
-                    <input type="file" className="custom-file-input" id="inputGroupFile02" />
-                    <label className="custom-file-label" htmlFor="inputGroupFile02">Vybrat soubor ...</label>
-                  </div>
-                </div>
+                <label>Náhledové obrázky</label>
+                <UploadThumbnails
+                  setImageThumbnailPath={path => this.setImageThumbnailPath(path)}
+                  setImageCoverPath={path => this.setImageCoverPath(path)}
+                  imageThumbnailPath={this.state.thumbnailImagePath}
+                  imageCoverPath={this.state.coverImagePath}
+                  articleID={this.props.match.params.id}
+                />
               </div>
 
               <div className="form-group">

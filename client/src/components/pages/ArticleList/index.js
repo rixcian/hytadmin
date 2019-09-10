@@ -12,7 +12,7 @@ class ArticleList extends React.Component {
     articles: [],
     isFetching: true,
     page: 1,
-    paging: 1,
+    paging: 10,
     activePage: 1,
     numberOfPages: 1
   };
@@ -36,7 +36,7 @@ class ArticleList extends React.Component {
   };
 
   componentDidMount() {
-    this.fetchArticles(0,1);
+    this.fetchArticles(0,10);
   }
 
   onArticleRemove = articleID => {
