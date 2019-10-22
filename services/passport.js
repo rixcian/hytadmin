@@ -12,7 +12,7 @@ passport.serializeUser((user, cb) => {
 
 passport.deserializeUser((id, cb) => {
   User.findOne({ _id: id })
-  .select('_id email username role active')
+  .select('_id email username role active avatarPath')
   .then(user => {
     cb(null, user);
   })
@@ -24,7 +24,7 @@ passport.use(new LocalStrategy({
   },
   (email, password, done) => {
     User.findOne({ email })
-    .select('_id email username role password active')
+    .select('_id email username role password active avatarPath')
     .then(user => {
       if (!user) return done(null, false, { email: 'Uživatel s touto emailovou adresou není zaregistrován' });
       if (!user.active) return done(null, false, { email: 'Máte odebraný přístup do administrace' });

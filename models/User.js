@@ -10,6 +10,10 @@ const UserSchema = new Schema({
     type: String,
     required: true
   },
+  avatarPath: {
+    type: String,
+    required: false,
+  },
   role: {
     type: String,
     required: true

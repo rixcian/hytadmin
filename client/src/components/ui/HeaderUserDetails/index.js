@@ -5,8 +5,6 @@ import * as actions from '../../../actions';
 import OutsideClickAlerter from '../OutsideClickAlerter';
 import DropdownItems from './DropdownItems';
 
-import userIconWEBP from '../../../assets/img/user_icons/rixcian_icon.webp';
-import userIconPNG from '../../../assets/img/user_icons/rixcian_icon.png';
 import('./HeaderUserDetails.scss');
 
 class HeaderUserDetails extends React.Component {
@@ -27,17 +25,18 @@ class HeaderUserDetails extends React.Component {
           <div onClick={() => this.toggleDetails()} className="dt-nav__link dropdown-toggle no-arrow dt-avatar-wrapper"
              data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <picture>
-              <source srcSet={userIconWEBP} type="image/webp"/>
-              <source srcSet={userIconPNG} type="image/png"/>
-              <img className="dt-avatar size-40" src={userIconPNG} alt={this.props.auth.username}/>
+              <source srcSet={this.props.auth.avatarPath + `?${new Date().getTime()}`} type="image/webp"/>
+              <source srcSet={this.props.auth.avatarPath + `?${new Date().getTime()}`} type="image/png"/>
+              <img className="dt-avatar size-40" src={this.props.auth.avatarPath + `?${new Date().getTime()}`} alt={this.props.auth.username}/>
             </picture>
           </div>
 
           {this.state.showDetails &&
-            <OutsideClickAlerter onOutsideClick={() => this.toggleDetails()}>
+            <OutsideClickAlerter onOutsideClick={this.toggleDetails}>
               <DropdownItems
                 user={this.props.auth}
                 onLogout={() => this.props.logoutUser()}
+                toggleDetails={this.toggleDetails}
               />
             </OutsideClickAlerter>
           }

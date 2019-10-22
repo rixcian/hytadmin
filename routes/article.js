@@ -62,6 +62,9 @@ module.exports = app => {
     Article.findOneAndDelete({ _id: articleID })
     .then(() => {
       res.status(204).send();
+    })
+    .catch(() => {
+      res.status(404).send({ err: 'Článek nebyl v databázi nalezen' });
     });
 
   });
@@ -87,7 +90,8 @@ module.exports = app => {
     const { title, content, thumbnailImagePath, coverImagePath } = req.body;
 
     Article.findOneAndUpdate({ _id: articleID },
-    { title, content, thumbnailImagePath, coverImagePath , updatedAt: new Date() })
+      { title, content, thumbnailImagePath, coverImagePath , updatedAt: new Date() },
+      { useFindAndModify: false })
     .then(() => res.status(204).send())
     .catch(err => res.status(500).send({ err }));
 

@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import * as actions from '../../../actions';
 
-import HeaderNotifications from '../../ui/HeaderNotifications';
+/*import HeaderNotifications from '../../ui/HeaderNotifications';*/
 import HeaderUserDetails from "../../ui/HeaderUserDetails";
 import { Link } from 'react-router-dom';
 
@@ -69,7 +69,7 @@ class Index extends React.Component {
           <div className="dt-header__toolbar">
             <div className="dt-nav-wrapper">
 
-              <HeaderNotifications />
+              {/*<HeaderNotifications />*/}
               <HeaderUserDetails />
 
             </div>

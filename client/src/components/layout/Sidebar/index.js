@@ -3,10 +3,6 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import * as actions from '../../../actions';
 
-import OutsideClickAlerter from '../../ui/OutsideClickAlerter';
-
-import userIconWEBP from "../../../assets/img/user_icons/rixcian_icon.webp";
-import userIconPNG from "../../../assets/img/user_icons/rixcian_icon.png";
 import('./Sidebar.scss');
 
 class Sidebar extends React.Component {
@@ -53,9 +49,9 @@ class Sidebar extends React.Component {
                 <div className="dropdown-toggle dt-avatar-wrapper text-body"
                      data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   <picture>
-                    <source srcSet={userIconWEBP} type="image/webp"/>
-                    <source srcSet={userIconPNG} type="image/png"/>
-                    <img className="dt-avatar size-40" src={userIconPNG} alt="rixcian"/>
+                    <source srcSet={this.props.auth.avatarPath + `?${new Date().getTime()}`} type="image/webp"/>
+                    <source srcSet={this.props.auth.avatarPath + `?${new Date().getTime()}`} type="image/png"/>
+                    <img className="dt-avatar size-40" src={this.props.auth.avatarPath + `?${new Date().getTime()}`} alt="rixcian"/>
                   </picture>
                   <span className="dt-avatar-info">
                   <span className="dt-avatar-name">{ username }</span>

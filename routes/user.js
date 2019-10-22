@@ -1,5 +1,7 @@
 const requireLogin = require('../middlewares/requireLogin');
+const requireAdmin = require('../middlewares/requireAdmin');
 const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
 
 const User = mongoose.model('User');
 const Article = mongoose.model('Article');
@@ -33,6 +35,62 @@ module.exports = app => {
 
     res.send({ allArticlesCount, editor });
 
+  });
+
+  app.put('/api/account/password', requireLogin, (req, res) => {
+    const { oldPassword, newPassword } = req.body;
+
+    User.findOne({ _id: req.user._id })
+      .then(user => {
+        if (!user) return res.status(500).send({ err: 'Vnitřní chyba serveru' });
+
+        bcrypt.compare(oldPassword, user.password, (err, success) => {
+          if (!success) return res.status(403).send({ err: 'Zadali jste špatné heslo.' });
+
+          bcrypt.hash(newPassword, 10, async (err, hash) => {
+            if (err) return res.status(500).send({ err: 'Vnitřní chyba serveru.' });
+            user.password = hash;
+            await user.save();
+            res.status(204).send();
+          });
+        });
+
+      })
+      .catch(err => res.status(500).send({ err }))
+  });
+
+  app.put('/api/account/email', requireLogin, (req, res) => {
+    const { email } = req.body;
+
+    // We're checking if it's not existing another user with that new email
+    User.findOne({ email })
+      .then(user => {
+        if (user) return res.status(403).send({ err: 'Uživatel s tímto emailem již existuje.' });
+
+        // We're finding logged user and changing email address
+        User.findOne({ _id: req.user._id })
+          .then(async user => {
+            if (!user) return res.status(500).send({ err: 'Vnitřní chyba serveru' });
+            user.email = email;
+            await user.save();
+            res.status(204).send();
+          })
+          .catch(err => res.status(500).send({ err }));
+
+      })
+      .catch(err => res.status(500).send({ err }));
+  });
+
+  app.delete('/api/users/:editorID', requireLogin, requireAdmin, (req, res) => {
+      const _id = req.params.editorID;
+
+      User.findOneAndDelete({ _id })
+          .then(() => {
+              res.status(204).send();
+          })
+          .catch(() => {
+              res.status(404).send({ err: 'Redaktor nebyl v databázi nalezen' });
+          });
   });
 
 };

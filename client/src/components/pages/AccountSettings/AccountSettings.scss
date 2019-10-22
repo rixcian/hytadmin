@@ -1,0 +1,11 @@
+.page-account {
+  .profile__banner {
+    background-color: transparent !important;
+    background-size: cover;
+    background-position: center;
+
+    &::before {
+      background-color: rgba(0, 0, 0, 0.5);
+    }
+  }
+}

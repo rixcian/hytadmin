@@ -115,9 +115,9 @@ export default props => {
         >
           {
             Object.keys(uploadedThumbnailFile).length !== 0
-            ? <img src={uploadedThumbnailFile.filePath} alt="avatar" style={{ width: '100%' }} />
+            ? <img src={uploadedThumbnailFile.filePath + `?${new Date().getTime()}`} alt="avatar" style={{ width: '100%' }} />
             : props.imageThumbnailPath
-              ? <img src={props.imageThumbnailPath} alt="avatar" style={{ width: '100%' }} />
+              ? <img src={props.imageThumbnailPath+ `?${new Date().getTime()}`} alt="avatar" style={{ width: '100%' }} />
               : <UploadButton buttonText="Náhledový obrázek" />
           }
         </Upload>
@@ -135,9 +135,9 @@ export default props => {
         >
           {
             Object.keys(uploadedCoverFile).length !== 0
-            ? <img src={uploadedCoverFile.filePath} alt="avatar" style={{ width: '100%' }} />
+            ? <img src={uploadedCoverFile.filePath + `?${new Date().getTime()}`} alt="avatar" style={{ width: '100%' }} />
             : props.imageCoverPath
-              ? <img src={props.imageCoverPath} alt="avatar" style={{ width: '100%' }} />
+              ? <img src={props.imageCoverPath + `?${new Date().getTime()}`} alt="avatar" style={{ width: '100%' }} />
               : <UploadButton buttonText="Cover obrázek" />
           }
         </Upload>

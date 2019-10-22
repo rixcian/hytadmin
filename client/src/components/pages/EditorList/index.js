@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import { notification } from "antd";
 
 import EditorListTable from "./EditorListTable";
 import Pagination from "../../ui/Pagination";
@@ -11,34 +12,56 @@ class EditorList extends React.Component {
     editors: [],
     isFetching: true,
     page: 1,
-    paging: 1
+    paging: 10,
+    activePage: 1,
+    numberOfPages: 1
   };
 
   fetchEditors = (skip, limit) => {
+    this.setState({ isFetching: true });
     axios.get(`/api/users/${skip}/${limit}`)
       .then(res => {
         const { allEditorsCount, editors } = res.data;
-        this.setState({ allEditorsCount, editors, isFetching: false });
+        this.setState({ allEditorsCount, editors,
+          isFetching: false,
+          numberOfPages: Math.ceil(allEditorsCount/this.state.paging)
+        });
       })
   };
 
   componentDidMount() {
-    this.fetchEditors(0, 10);
+    this.fetchEditors(0, this.state.paging);
   }
 
   onEditorRemove = editorID => {
     console.log(`Editor ID: ${editorID}`);
+    axios.delete(`/api/users/${editorID}`)
+        .then(res => {
+          this.fetchEditors(0, 10);
+          notification['success']({
+            message: 'Redaktor byl odstraněn',
+            description: 'Vámi zvolený redaktor byl úspěšně smazán z databáze.',
+            placement: 'bottomRight'
+          });
+        })
+        .catch(errResponse => {
+          notification['error']({
+            message: 'Redaktor nebyl odstraněn',
+            description: 'Vámi zvolený redaktor nebyl odstraněn. Zkuste znovu načíst stránku.',
+            placement: 'bottomRight'
+          });
+        })
   };
 
   onPageChange = numOfPage => {
     let skip = (numOfPage-1) * this.state.paging;
     let limit = (this.state.allEditorsCount-skip) > this.state.paging ? this.state.paging : (this.state.allEditorsCount-skip);
     this.setState({ isFetching: true });
-    this.fetchArticles(skip, limit);
+    this.fetchEditors(skip, limit);
   };
 
   render() {
-    const { editors, isFetching, allEditorsCount, paging } = this.state;
+    const { editors, isFetching, allEditorsCount, paging, activePage, numberOfPages } = this.state;
 
     return (
       <>
@@ -56,8 +79,9 @@ class EditorList extends React.Component {
 
         {allEditorsCount !== 0 && (
           <Pagination
-            numberOfPages={Math.ceil(allEditorsCount/paging)}
+            numberOfPages={numberOfPages}
             onPageChange={numOfPage => this.onPageChange(numOfPage)}
+            activePage={activePage}
           />
         )}
       </>

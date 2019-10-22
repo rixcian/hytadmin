@@ -36,7 +36,7 @@ class ArticleList extends React.Component {
   };
 
   componentDidMount() {
-    this.fetchArticles(0,10);
+    this.fetchArticles(0,this.state.paging);
   }
 
   onArticleRemove = articleID => {

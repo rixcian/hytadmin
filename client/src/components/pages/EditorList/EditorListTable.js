@@ -50,8 +50,10 @@ export default (props) => {
                             title="Opravdu chcete smazat tohoto redaktora?"
                             onConfirm={() => props.onEditorRemove(row._id)}
                             okText="Ano"
+                            okButtonProps={{ type: 'danger' }}
+                            cancelButtonProps={{ type: 'link', style: { color: 'rgba(0, 0, 0, 0.65)' } }}
                             cancelText="Ne"
-                            icon={<Icon type="delete" className={{ color: 'red !important' }} />}
+                            icon={<Icon type="delete" style={{ color: 'red' }} />}
                             className="btn btn-danger mr-2">
                             <Icon type="delete" style={{ position: 'relative', top: '-2px' }} /><span>&nbsp;Smazat</span>
                           </Popconfirm>
