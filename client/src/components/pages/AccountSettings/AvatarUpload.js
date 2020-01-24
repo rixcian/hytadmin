@@ -1,9 +1,6 @@
 import React, { useState } from 'react';
-import { Upload, Icon, message } from 'antd';
+import { Upload, Icon } from 'antd';
 import axios from 'axios';
-
-import avatarWEBP from '../../../assets/img/user_icons/rixcian_icon.webp';
-import avatarPNG from '../../../assets/img/user_icons/rixcian_icon.png';
 
 const { Dragger } = Upload;
 
@@ -37,7 +34,7 @@ export default props => {
         }
       })
       .then(res => {
-        const { fileName, filePath } = res.data;
+        const { filePath } = res.data;
         setOldAvatarPath(filePath);
         setAvatarPath(filePath);
         props.onUploadSuccess();

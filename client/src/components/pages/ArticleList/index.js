@@ -69,7 +69,7 @@ class ArticleList extends React.Component {
 
   render() {
     const { articles, isFetching,
-            allArticlesCount, paging,
+            allArticlesCount,
             activePage, numberOfPages } = this.state;
 
     return (

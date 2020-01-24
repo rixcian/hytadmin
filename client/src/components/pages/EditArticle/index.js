@@ -1,5 +1,4 @@
 import React from 'react';
-import CKEditor from 'ckeditor4-react';
 import axios from 'axios';
 import { notification, Icon } from 'antd';
 import UploadThumbnails from "../../ui/UploadThumbnails";
@@ -100,10 +99,6 @@ class EditArticle extends React.Component {
 
               <div className="form-group">
                 <label htmlFor="email-1">Obsah</label>
-                <CKEditor
-                  data={this.state.content}
-                  onChange={(e) => this.setState({ content: e.editor.getData() })}
-                />
               </div>
 
               <div className="form-group" style={{ textAlign: 'right' }}>

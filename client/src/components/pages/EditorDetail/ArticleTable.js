@@ -27,7 +27,7 @@ export default (props) => {
   useEffect(() => {
     !isFetching && setIsFetching(true);
     fetchArticles();
-  }, [articlesSkip, articlesLimit]);
+  }, []);
 
   if (isFetching) {
     return (

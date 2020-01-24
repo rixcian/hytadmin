@@ -6,9 +6,6 @@ import PasswordChangeForm from './PasswordChangeForm';
 import EmailChangeForm from './EmailChangeForm';
 import AvatarUpload from "./AvatarUpload";
 
-import userIconWEBP from "../../../assets/img/user_icons/rixcian_icon.webp";
-import userIconPNG from "../../../assets/img/user_icons/rixcian_icon.png";
-
 import('./AccountSettings.scss');
 
 class AccountSettings extends React.Component {

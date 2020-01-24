@@ -1308,6 +1308,11 @@
     "@types/prop-types" "*"
     csstype "^2.2.0"
 
+"@types/sortablejs@^1.10.0":
+  version "1.10.2"
+  resolved "https://registry.yarnpkg.com/@types/sortablejs/-/sortablejs-1.10.2.tgz#d749f6fe9965322b2107f6711a6fed692a71941e"
+  integrity sha512-aWK2oTpbjNmLyexl95L4ttd0kFIvbMIf1JR2YbNhUwIk9Y1cOwfAfyvfxBBmtg1ZDy64gpbgEdFjyqnzjh+3/A==
+
 "@types/stack-utils@^1.0.1":
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/@types/stack-utils/-/stack-utils-1.0.1.tgz#0a851d3bd96498fa25c33ab7278ed3bd65f06c3e"
@@ -4531,11 +4536,6 @@ find-up@^2.0.0, find-up@^2.1.0:
   integrity sha1-RdG35QbHF93UgndaK3eSCjwMV6c=
   dependencies:
     locate-path "^2.0.0"
-
-flag-icon-css@^3.0.0:
-  version "3.3.0"
-  resolved "https://registry.yarnpkg.com/flag-icon-css/-/flag-icon-css-3.3.0.tgz#7772461e4480d3d86da5962f02120a2825688433"
-  integrity sha512-u5lCGVExrJJRykNGd//ZrBU5Bkt0LTZJFSuG+Az/pwcHgzDeFwomwFbsgVtI1aJd6ysyHsx+5UGrA+nhSGd4yw==
 
 flat-cache@^2.0.1:
   version "2.0.1"
@@ -9410,6 +9410,16 @@ react-slick@~0.25.2:
     lodash.debounce "^4.0.8"
     resize-observer-polyfill "^1.5.0"
 
+react-sortablejs@^2.0.9:
+  version "2.0.9"
+  resolved "https://registry.yarnpkg.com/react-sortablejs/-/react-sortablejs-2.0.9.tgz#4cd086ac375806aa8c176683425b24d5a963f7c2"
+  integrity sha512-0vs6krRksmupcs7VG1mww85bSg7vNEvoKExIV1bu8YB3zJjGb5Kb7RTL79bM0wt+Pq6a944jOWGaGNc5/mmG8A==
+  dependencies:
+    "@types/sortablejs" "^1.10.0"
+    classnames "^2.2.6"
+    sortablejs "1.10.1"
+    tiny-invariant "^1.0.6"
+
 react@^16.9.0:
   version "16.9.0"
   resolved "https://registry.yarnpkg.com/react/-/react-16.9.0.tgz#40ba2f9af13bc1a38d75dbf2f4359a5185c4f7aa"
@@ -10238,6 +10248,11 @@ sockjs@0.3.19:
     faye-websocket "^0.10.0"
     uuid "^3.0.1"
 
+sortablejs@1.10.1:
+  version "1.10.1"
+  resolved "https://registry.yarnpkg.com/sortablejs/-/sortablejs-1.10.1.tgz#3d52b00f871be00f00f84d99a60d120bf3dfe52c"
+  integrity sha512-N6r7GrVmO8RW1rn0cTdvK3JR0BcqecAJ0PmYMCL3ZuqTH3pY+9QyqkmJSkkLyyDvd+AJnwaxTP22Ybr/83V9hQ==
+
 source-list-map@^2.0.0:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/source-list-map/-/source-list-map-2.0.1.tgz#3993bd873bfc48479cca9ea3a547835c7c154b34"
@@ -10797,6 +10812,11 @@ timsort@^0.3.0:
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/timsort/-/timsort-0.3.0.tgz#405411a8e7e6339fe64db9a234de11dc31e02bd4"
   integrity sha1-QFQRqOfmM5/mTbmiNN4R3DHgK9Q=
+
+tiny-invariant@^1.0.6:
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/tiny-invariant/-/tiny-invariant-1.0.6.tgz#b3f9b38835e36a41c843a3b0907a5a7b3755de73"
+  integrity sha512-FOyLWWVjG+aC0UqG76V53yAWdXfH8bO6FNmyZOuUrzDzK8DI3/JRY25UD7+g49JWM1LXwymsKERB+DzI0dTEQA==
 
 tiny-warning@^1.0.2:
   version "1.0.3"

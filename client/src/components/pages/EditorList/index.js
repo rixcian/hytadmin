@@ -61,7 +61,7 @@ class EditorList extends React.Component {
   };
 
   render() {
-    const { editors, isFetching, allEditorsCount, paging, activePage, numberOfPages } = this.state;
+    const { editors, isFetching, allEditorsCount, activePage, numberOfPages } = this.state;
 
     return (
       <>
