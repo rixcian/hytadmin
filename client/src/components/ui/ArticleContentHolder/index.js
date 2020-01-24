@@ -15,11 +15,19 @@ const ArticleContentHolder = props => {
     props.onItemChange(item);
   }
 
+  const changeItemVisibility = () => {
+    let updatedItem = item;
+    updatedItem.visible = !visibility;
+    setVisibility(!visibility);
+    setItem(updatedItem);
+    props.onItemChange(updatedItem); 
+  }
+
   if (item.type === 'text') {
     return (
-      <div className="dt-card article-content article-text-content" onClick={() => setVisibility(!visibility)}>
+      <div className="dt-card article-content article-text-content">
 
-        <div className="article-content-top">
+        <div className="article-content-top" onClick={() => changeItemVisibility()}>
           <span>
             <i className="icon icon-quote-backward icon-fw content-icon mr-5" />
             &nbsp;{content.substring(0, 50)}... 
@@ -29,14 +37,15 @@ const ArticleContentHolder = props => {
         </div>
 
         {visibility && 
-          <span>
+          <div className="article-content-bottom">
             <hr />
             <textarea 
               className="form-control" 
               value={content}
               onChange={(e) => itemContentChanged(e.target.value)}
+              onClick={() => {}}
             ></textarea>
-          </span>
+          </div>
         }
 
       </div>  

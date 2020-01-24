@@ -3,6 +3,7 @@ import axios from 'axios';
 import { notification } from 'antd';
 import { ReactSortable } from 'react-sortablejs';
 
+import ArticleContentWrapper from '../../ui/ArticleContentWrapper';
 import ArticleContentHolder from '../../ui/ArticleContentHolder';
 
 import UploadThumbnails from '../../ui/UploadThumbnails';
@@ -15,38 +16,7 @@ class NewArticle extends React.Component {
     super(props);
     this.state = {
       title: '',
-      contentList: [
-        // {
-        //   id: '0',
-        //   type: 'text',
-        //   content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque turpis orci, tempus in fermentum nec, accumsan ut elit. Praesent consequat iaculis nunc, sit amet finibus ante scelerisque quis. Duis non ligula vel risus sagittis venenatis nec vitae dui. Proin laoreet nec quam sed pulvinar.',
-        //   visible: false
-        // },
-        // {
-        //   id: '1',
-        //   type: 'video',
-        //   content: '',
-        //   visible: false
-        // },
-        // {
-        //   id: '2',
-        //   type: 'text',
-        //   content: 'Integer quis augue at lectus pulvinar iaculis. Aliquam diam tellus, pulvinar vel diam et, tincidunt rutrum magna. Integer egestas feugiat justo, ut tincidunt magna sollicitudin sed. Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-        //   visible: false
-        // },
-        // {
-        //   id: '3',
-        //   type: 'image',
-        //   content: '',
-        //   visible: false
-        // },
-        // {
-        //   id: '4',
-        //   type: 'text',
-        //   content: 'Curabitur quam elit, lacinia sed sapien sit amet, finibus tincidunt risus. Duis cursus tristique mollis. Proin vitae tristique velit. Aliquam erat volutpat. Vestibulum semper quam et metus sodales, eu pellentesque lorem viverra. Morbi nec purus magna.',
-        //   visible: false
-        // },
-      ],
+      articleContent: [],
       thumbnailImagePath: '',
       coverImagePath: '',
       showAddOptions: false
@@ -86,15 +56,15 @@ class NewArticle extends React.Component {
 
   addArticleItem = (type, content) => {
     let item = {
-      id: this.state.contentList.length + 1,
+      id: this.state.articleContent.length + 1,
       type: type,
       content: content,
       visible: false
     };
 
-    let newContentList = this.state.contentList;
-    newContentList.push(item);
-    this.setState({ contentList: newContentList });
+    let newArticleContent = this.state.articleContent;
+    newArticleContent.push(item);
+    this.setState({ articleContent: newArticleContent });
   }
 
   updateArticleItem = (newItem) => {
@@ -133,21 +103,10 @@ class NewArticle extends React.Component {
               />
             </div>
 
-            <div className="form-group">
-              <label>Obsah článku</label>
-              <ReactSortable 
-                list={this.state.contentList} 
-                setList={newList => this.setState({ contentList: newList})}
-              >
-                {this.state.contentList.map((item, i) => 
-                  <ArticleContentHolder 
-                    key={item.id}
-                    item={item} 
-                    onItemChange={item => this.updateArticleItem(item)} 
-                  />
-                )}
-              </ReactSortable>
-            </div>
+            <ArticleContentWrapper 
+              initialContent={this.state.articleContent} 
+              onContentUpdate={updatedArticleContent => this.setState({ articleContent: updatedArticleContent })} 
+            />
 
             <div className="form-group mt-10" style={{ textAlign: 'right' }}>
               <div className="add-article-content mb-2 float-left">
