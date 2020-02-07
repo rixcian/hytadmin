@@ -21,7 +21,12 @@ import EditorNew from "./pages/NewEditor";
 import PasswordReset from "./pages/PasswordReset";
 import AccountSettings from "./pages/AccountSettings";
 
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faImage, faVideo, faQuoteRight, faCloudUploadAlt } from '@fortawesome/free-solid-svg-icons';
+
 import('./App.scss');
+
+library.add(faImage, faVideo, faQuoteRight, faCloudUploadAlt);
 
 class App extends React.Component {
   componentDidMount() {

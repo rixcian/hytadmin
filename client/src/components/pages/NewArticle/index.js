@@ -1,10 +1,8 @@
 import React from 'react';
 import axios from 'axios';
 import { notification } from 'antd';
-import { ReactSortable } from 'react-sortablejs';
 
 import ArticleContentWrapper from '../../ui/ArticleContentWrapper';
-import ArticleContentHolder from '../../ui/ArticleContentHolder';
 
 import UploadThumbnails from '../../ui/UploadThumbnails';
 import './NewArticle.scss';
@@ -16,6 +14,7 @@ class NewArticle extends React.Component {
     super(props);
     this.state = {
       title: '',
+      indexer: 0,
       articleContent: [],
       thumbnailImagePath: '',
       coverImagePath: '',
@@ -29,6 +28,7 @@ class NewArticle extends React.Component {
   setImageCoverPath = path => this.setState({ coverImagePath: path });
 
   saveArticle = () => {
+    console.log(JSON.stringify(this.state.articleContent));
     axios.post('/api/articles', this.state)
     .then(() => {
       notification['success']({
@@ -56,22 +56,24 @@ class NewArticle extends React.Component {
 
   addArticleItem = (type, content) => {
     let item = {
-      id: this.state.articleContent.length + 1,
+      id: this.state.indexer++,
       type: type,
       content: content,
       visible: false
     };
+
+    this.setState({ indexer: this.state.indexer });
 
     let newArticleContent = this.state.articleContent;
     newArticleContent.push(item);
     this.setState({ articleContent: newArticleContent });
   }
 
-  updateArticleItem = (newItem) => {
-    let newContentList = this.state.contentList;
-    let oldItemIndex = newContentList.findIndex(item => item.id === newItem.id);
-    newContentList[oldItemIndex] = newItem;
-    this.setState({ contentList: newContentList });
+  deleteArticleItem = item => {
+    const itemIndex = this.state.articleContent.indexOf(item);
+    let newArticleContent = this.state.articleContent;
+    newArticleContent.splice(itemIndex, 1);
+    this.setState({ articleContent: newArticleContent });
   }
 
   render() {
@@ -103,10 +105,14 @@ class NewArticle extends React.Component {
               />
             </div>
 
-            <ArticleContentWrapper 
-              initialContent={this.state.articleContent} 
-              onContentUpdate={updatedArticleContent => this.setState({ articleContent: updatedArticleContent })} 
-            />
+            <div className="form-group">
+              <label>Obsah článku</label>
+              <ArticleContentWrapper 
+                initialContent={this.state.articleContent} 
+                onContentUpdate={updatedArticleContent => this.setState({ articleContent: updatedArticleContent })}
+                onDeleteItem={item => this.deleteArticleItem(item)}
+              />
+            </div>
 
             <div className="form-group mt-10" style={{ textAlign: 'right' }}>
               <div className="add-article-content mb-2 float-left">
@@ -132,8 +138,14 @@ class NewArticle extends React.Component {
                     className={this.state.showAddOptions ? "add-article-item fadeIn delay0" : "add-article-item fadeOut delay30"}
                     onClick={() => this.addArticleItem('text', '')}
                     >Text</div>
-                  <div className={this.state.showAddOptions ? "add-article-item fadeIn delay15" : "add-article-item fadeOut delay15"}>Obrázek</div>
-                  <div className={this.state.showAddOptions ? "add-article-item fadeIn delay30" : "add-article-item fadeOut delay0"}>Video</div>
+                  <div 
+                    className={this.state.showAddOptions ? "add-article-item fadeIn delay15" : "add-article-item fadeOut delay15"}
+                    onClick={() => this.addArticleItem('image', '')}
+                    >Obrázek</div>
+                  <div 
+                    className={this.state.showAddOptions ? "add-article-item fadeIn delay30" : "add-article-item fadeOut delay0"}
+                    onClick={() => this.addArticleItem('video', '')}
+                    >Video</div>
                 </div>
                 
               </div>

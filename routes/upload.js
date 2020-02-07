@@ -1,4 +1,5 @@
 const fileUpload = require('express-fileupload');
+const generator = require('generate-password');
 const requireLogin = require('../middlewares/requireLogin');
 const path = require('path');
 const fsPromises = require('fs').promises;
@@ -22,10 +23,15 @@ module.exports = app => {
 
   app.post('/api/upload', requireLogin, (req, res) => {
 
-    if (req.files === null) return res.status(400).send({ err: 'Žádný soubor k nahrání' });
+    // We're checking if client is sending some file to save
+    if (req.files === undefined) return res.status(400).send({ err: 'Žádný soubor k nahrání' });
 
     const { file } = req.files;
-    const { directory, oldThumbnailPath, oldCoverPath, articleID } = req.body;
+    const { directory, oldThumbnailPath, oldCoverPath } = req.body;
+    
+    // We're checking if client enter all needed values
+    if (!directory) 
+      return res.status(400).send({ err: 'Nezadali jste všechny parametry' });
 
     // We're checking if the user replacing thumbnail image with new one
     if (oldThumbnailPath !== '') {
@@ -42,13 +48,17 @@ module.exports = app => {
     }
 
     const destinationFolder = path.join(__dirname, '../uploads', directory);
+    const generatedFileName = generator.generate({
+      length: 12,
+      numbers: true
+    });
 
     fsPromises.stat(destinationFolder)
-    .then(() => writeFileAndResponse(destinationFolder, directory, file, articleID, res))
+    .then(() => writeFileAndResponse(destinationFolder, directory, file, generatedFileName, res))
     .catch(async () => {
       // creates a new folder and save the file into that folder
       await fsPromises.mkdir(destinationFolder);
-      writeFileAndResponse(destinationFolder, directory, file, articleID, res);
+      writeFileAndResponse(destinationFolder, directory, file, generatedFileName, res);
     });
   });
 
@@ -94,6 +104,42 @@ module.exports = app => {
           .then(() => writeFileAndResponse(destinationFolder, 'avatars', file, req.user._id, res))
           .catch(err => res.status(500).send({ err }));
 
+      });
+
+  });
+
+
+  app.post('/api/upload/image', requireLogin,(req, res) => {
+
+    // We're checking if client is sending some file to save
+    if (req.files === undefined) return res.status(400).send({ err: 'Žádný soubor k nahrání' });
+
+    const { file } = req.files;
+    const { directory, oldImagePath } = req.body;
+
+    // We're checking if client enter all needed values
+    if (!directory) 
+      return res.status(400).send({ err: 'Nezadali jste všechny parametry' });
+    
+    // We're checking if the user replacing image with new one
+    if (oldImagePath !== '') {
+      let oldImage = oldImagePath.split('/api/uploads/').pop();
+      fsPromises.unlink(path.join(__dirname, '../uploads', oldImage))
+        .catch(err => console.log(err));
+    }
+
+    const destinationFolder = path.join(__dirname, '../uploads', directory);
+    const generatedFileName = generator.generate({
+      length: 12,
+      numbers: true
+    });
+
+    fsPromises.stat(destinationFolder)
+      .then(() => writeFileAndResponse(destinationFolder, directory, file, generatedFileName, res))
+      .catch(async () => {
+        // creates a new folder and save the file into that folder
+        await fsPromises.mkdir(destinationFolder);
+        writeFileAndResponse(destinationFolder, directory, file, generatedFileName, res);
       });
 
   });

@@ -1,10 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
+import UploadArticleImage from '../UploadArticleImage';
 
 const ArticleContentHolder = props => {
 
   const [item, setItem] = useState(props.item);
   const [content, setContent] = useState(props.item.content);
   const [visibility, setVisibility] = useState(item.visibility);
+
+  const deleteButton = useRef();
 
   const itemContentChanged = newContent => {
     setContent(newContent);
@@ -23,17 +28,29 @@ const ArticleContentHolder = props => {
     props.onItemChange(updatedItem); 
   }
 
+  const handleOnClickEvent = e => {
+    e.target === deleteButton.current 
+      ? props.onDeleteItem(item)
+      : changeItemVisibility();
+  }
+
   if (item.type === 'text') {
     return (
       <div className="dt-card article-content article-text-content">
 
-        <div className="article-content-top" onClick={() => changeItemVisibility()}>
+        <div 
+          className="article-content-top" 
+          onClick={e => handleOnClickEvent(e)}
+        >
           <span>
-            <i className="icon icon-quote-backward icon-fw content-icon mr-5" />
+            <FontAwesomeIcon icon="quote-right" className="content-icon mr-5 icon-fw" />
             &nbsp;{content.substring(0, 50)}... 
             <span>&nbsp;(Text)</span>
           </span>
-          <i className={`icon ${item.visible ? `icon-menu-up` : `icon-menu-down`} icon-fw mr-2 mr-sm-1`}/>
+          <div className="ml-auto">
+            <button ref={deleteButton} className="btn btn-sm btn-light mr-4">Odstranit</button>
+            <i className={`icon ${item.visible ? `icon-menu-up` : `icon-menu-down`} icon-fw mr-2 mr-sm-1`}/>
+          </div>
         </div>
 
         {visibility && 
@@ -43,7 +60,6 @@ const ArticleContentHolder = props => {
               className="form-control" 
               value={content}
               onChange={(e) => itemContentChanged(e.target.value)}
-              onClick={() => {}}
             ></textarea>
           </div>
         }
@@ -56,20 +72,29 @@ const ArticleContentHolder = props => {
     return (
       <div className="dt-card article-content article-image-content">
 
-        <div className="article-content-top" onClick={() => setVisibility(!visibility)}>
+        <div 
+          className="article-content-top" 
+          onClick={e => handleOnClickEvent(e)}
+        >
           <span>
-            <i className="icon icon-image icon-fw content-icon mr-5" />
-            &nbsp;Article Image
+            <FontAwesomeIcon icon="image" className="content-icon mr-5 icon-fw" />
+            &nbsp;{content.substring(0, 50)}... 
             <span>&nbsp;(Obrázek)</span>
           </span>
-          <i className={`icon ${item.visible ? `icon-menu-up` : `icon-menu-down`} icon-fw mr-2 mr-sm-1`}/>
+          <div className="ml-auto">
+            <button ref={deleteButton} className="btn btn-sm btn-light mr-4">Odstranit</button>
+            <i className={`icon ${item.visible ? `icon-menu-up` : `icon-menu-down`} icon-fw mr-2 mr-sm-1`}/>
+          </div>
         </div>
 
         {visibility && 
-          <span>
+          <div className="article-content-bottom">
             <hr />
-            <textarea className="form-control" value={item.content}></textarea>
-          </span>
+            <UploadArticleImage 
+              onChange={imagePath => itemContentChanged(imagePath)}
+              oldImagePath={content}
+            />
+          </div>
         }
 
       </div>
@@ -80,20 +105,30 @@ const ArticleContentHolder = props => {
     return (
       <div className="dt-card article-content article-video-content">
 
-        <div className="article-content-top" onClick={() => setVisibility(!visibility)}>
+        <div 
+          className="article-content-top" 
+          onClick={e => handleOnClickEvent(e)}
+        >
           <span>
-            <i className="icon icon-tab icon-fw content-icon mr-5" />
-            &nbsp;Article Video
+            <FontAwesomeIcon icon="video" className="content-icon mr-5 icon-fw" />
+            &nbsp;{content.substring(0, 50)}... 
             <span>&nbsp;(Video)</span>
           </span>
-          <i className={`icon ${item.visible ? `icon-menu-up` : `icon-menu-down`} icon-fw mr-2 mr-sm-1`}/>
+          <div className="ml-auto">
+            <button ref={deleteButton} className="btn btn-sm btn-light mr-4">Odstranit</button>
+            <i className={`icon ${item.visible ? `icon-menu-up` : `icon-menu-down`} icon-fw mr-2 mr-sm-1`}/>
+          </div>
         </div>
 
         {visibility && 
-          <span>
+          <div className="article-content-bottom">
             <hr />
-            <textarea className="form-control" value={item.content}></textarea>
-          </span>
+            <textarea 
+              className="form-control" 
+              value={content}
+              onChange={(e) => itemContentChanged(e.target.value)}
+            ></textarea>
+          </div>
         }
 
       </div>
@@ -101,7 +136,7 @@ const ArticleContentHolder = props => {
   }
 
   else {
-    return <div></div>;
+    return null;
   }
 }
 

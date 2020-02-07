@@ -1,22 +1,13 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { ReactSortable } from "react-sortablejs";
-import ArticleContentHolder from "../ArticleContentHolder";
 import PropTypes from "prop-types";
 
+import { Empty } from 'antd';
+import ArticleContentHolder from "../ArticleContentHolder";
+
 const ArticleContentWrapper = props => {
-
+  
   const content = props.initialContent;
-
-  useEffect(() => {
-
-  });
-
-  const itemChanged = (item, index) => {
-    console.log("change");
-    let newContent = content;
-    newContent[index] = item;
-    props.onContentUpdate(newContent);
-  };
 
   const updateArticleItem = newItem => {
     let newContent = content;
@@ -25,9 +16,8 @@ const ArticleContentWrapper = props => {
     props.onContentUpdate(newContent);
   };
 
-  return (
-    <div className="form-group">
-      <label>Obsah článku</label>
+  if (content.length !== 0) {
+    return (
       <ReactSortable
         list={content}
         setList={newList => props.onContentUpdate(newList)}
@@ -37,11 +27,14 @@ const ArticleContentWrapper = props => {
             key={item.id}
             item={item}
             onItemChange={item => updateArticleItem(item)}
+            onDeleteItem={item => props.onDeleteItem(item)}
           />
         ))}
       </ReactSortable>
-    </div>
-  );
+    );
+  } else {
+    return <Empty description={"Nic tu není 😿"} />;
+  }
 };
 
 ArticleContentWrapper.propTypes = {

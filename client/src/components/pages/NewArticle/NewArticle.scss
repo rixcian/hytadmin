@@ -3,7 +3,7 @@
   transition: all .25s ease-in-out;
 
   .article-content-top {
-    padding: 2rem 3rem 2rem 3rem;
+    padding: 1.5rem 2.5rem 1.5rem 2.5rem;
     display: flex;
     align-items: center;
     color: #797979;
@@ -71,4 +71,22 @@
       background-color: #d2d2d2;
     }
   }
+}
+
+.ant-upload.ant-upload-drag {
+  margin-top: 2rem !important;
+  width: auto !important;
+  height: auto !important;
+}
+
+.ant-upload.ant-upload-drag:not(.ant-upload-disabled):hover {
+  border-color: #212529 !important;
+}
+
+.ant-upload.ant-upload-drag.ant-upload-drag-hover:not(.ant-upload-disabled) {
+  border-color: #212529 !important;
+}
+
+.ant-upload.ant-upload-select-picture-card:hover {
+  border-color: #212529 !important;
 }

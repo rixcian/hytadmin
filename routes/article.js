@@ -7,14 +7,14 @@ module.exports = app => {
 
   app.post('/api/articles', requireLogin, async (req, res) => {
 
-    const { title, content, thumbnailImagePath, coverImagePath } = req.body;
+    const { title, articleContent, thumbnailImagePath, coverImagePath } = req.body;
     
     await new Article({
       title,
       thumbnailImagePath,
       coverImagePath,
       author: req.user.id,
-      content
+      content: articleContent
     }).save();
 
     res.status(201).send();

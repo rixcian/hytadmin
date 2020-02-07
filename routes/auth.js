@@ -10,15 +10,17 @@ const pass = require('../config/keys').password;
 const sendPasswordResetEmail = (email, newPassword) =>
   new Promise((resolve, reject) => {
     const transporter = nodemailer.createTransport({
-      service: 'gmail',
+      host: 'smtp.gmail.com',
+      port: 465,
+      secure: true,
       auth: {
         user: 'ricianelf@gmail.com',
-        pass
+        pass: pass
       }
     });
 
     const mailOptions = {
-      from: '"CeskyHytale.cz" <rostislav.kremecek@gmail.com>',
+      from: '"CeskyHytale.cz" <ricianelf@gmail.com>',
       to: email,
       subject: 'Zapomenuté heslo',
       html: `Nové heslo: <b>${ newPassword }</b>`
