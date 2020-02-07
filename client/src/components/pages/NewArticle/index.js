@@ -18,7 +18,7 @@ class NewArticle extends React.Component {
       articleContent: [],
       thumbnailImagePath: '',
       coverImagePath: '',
-      showAddOptions: false
+      showAddOptions: false,
     }
     this.addItemsRef = React.createRef();
   }
@@ -27,9 +27,8 @@ class NewArticle extends React.Component {
 
   setImageCoverPath = path => this.setState({ coverImagePath: path });
 
-  saveArticle = () => {
-    console.log(JSON.stringify(this.state.articleContent));
-    axios.post('/api/articles', this.state)
+  saveArticle = (isArticleDraft) => {
+    axios.post('/api/articles', {...this.state, draft: isArticleDraft})
     .then(() => {
       notification['success']({
         message: 'Článek byl úspěšně nahrán',
@@ -134,6 +133,10 @@ class NewArticle extends React.Component {
                 </button>
 
                 <div ref={this.addItemsRef} className="add-article-items">
+                <div 
+                    className={this.state.showAddOptions ? "add-article-item fadeIn delay0" : "add-article-item fadeOut delay30"}
+                    onClick={() => this.addArticleItem('heading', '')}
+                    >Nadpis</div>
                   <div 
                     className={this.state.showAddOptions ? "add-article-item fadeIn delay0" : "add-article-item fadeOut delay30"}
                     onClick={() => this.addArticleItem('text', '')}
@@ -153,12 +156,13 @@ class NewArticle extends React.Component {
               <button
                 type="button"
                 className="btn btn-light mr-2 mb-2"
+                onClick={() => this.saveArticle(true)}
               >Uložit jako koncept</button>
               
               <button
                 type="button"
                 className="btn btn-dark mr-2 mb-2"
-                onClick={() => this.saveArticle()}
+                onClick={() => this.saveArticle(false)}
               >Uložit</button>
             </div>
 

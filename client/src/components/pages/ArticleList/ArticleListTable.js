@@ -37,12 +37,14 @@ export default (props) => {
                   {data.reverse().map((row, i) => {
                     let createdAt = moment(row.createdAt).format('DD.MM.YYYY');
                     let updatedAt = !row.updatedAt ? 'Nikdy' : moment(row.updatedAt).format('DD.MM.YYYY');
+                    let draft = row.draft ? 'Ano' : 'Ne';
                     return (
                       <tr key={i} className="text-center">
                         <td className="font-weight-medium pt-6">{row.title}</td>
                         <td className="pt-6"><Link to={`/editors/${row.author._id}`} className="font-weight-medium author-link">{row.author.username}</Link></td>
                         <td className="pt-6">{createdAt}</td>
                         <td className="pt-6">{updatedAt}</td>
+                        <td className="pt-6">{draft}</td>
                         <td>
                           <Link to={`/articles/${row._id}`} className="btn btn-light mr-2">
                             <Icon type="edit" style={{ position: 'relative', top: '-2px' }} /><span>&nbsp;Editovat</span>

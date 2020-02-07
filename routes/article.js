@@ -7,14 +7,15 @@ module.exports = app => {
 
   app.post('/api/articles', requireLogin, async (req, res) => {
 
-    const { title, articleContent, thumbnailImagePath, coverImagePath } = req.body;
+    const { title, articleContent, thumbnailImagePath, coverImagePath, draft } = req.body;
     
     await new Article({
       title,
       thumbnailImagePath,
       coverImagePath,
       author: req.user.id,
-      content: articleContent
+      content: articleContent,
+      draft
     }).save();
 
     res.status(201).send();
@@ -87,10 +88,10 @@ module.exports = app => {
   app.put('/api/articles/:articleID', requireLogin, (req, res) => {
 
     const { articleID } = req.params;
-    const { title, content, thumbnailImagePath, coverImagePath } = req.body;
+    const { title, content, thumbnailImagePath, coverImagePath, draft } = req.body;
 
     Article.findOneAndUpdate({ _id: articleID },
-      { title, content, thumbnailImagePath, coverImagePath , updatedAt: new Date() },
+      { title, content, thumbnailImagePath, coverImagePath , updatedAt: new Date(), draft },
       { useFindAndModify: false })
     .then(() => res.status(204).send())
     .catch(err => res.status(500).send({ err }));

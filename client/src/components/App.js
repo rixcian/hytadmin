@@ -22,11 +22,11 @@ import PasswordReset from "./pages/PasswordReset";
 import AccountSettings from "./pages/AccountSettings";
 
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faImage, faVideo, faQuoteRight, faCloudUploadAlt } from '@fortawesome/free-solid-svg-icons';
+import { faImage, faVideo, faQuoteRight, faCloudUploadAlt, faHeading } from '@fortawesome/free-solid-svg-icons';
 
 import('./App.scss');
 
-library.add(faImage, faVideo, faQuoteRight, faCloudUploadAlt);
+library.add(faImage, faVideo, faQuoteRight, faCloudUploadAlt, faHeading);
 
 class App extends React.Component {
   componentDidMount() {

@@ -79,7 +79,7 @@ class ArticleList extends React.Component {
         </div>
 
         <ArticleListTable
-          headItems={['Nadpis', 'Autor', 'Vytvořeno', 'Naposledy upraveno', 'Úpravy']}
+          headItems={['Nadpis', 'Autor', 'Vytvořeno', 'Naposledy upraveno', 'Koncept', 'Úpravy']}
           data={articles}
           noDataMessage={'Ještě jste nepřidali žádný článek ...'}
           isFetching={isFetching}

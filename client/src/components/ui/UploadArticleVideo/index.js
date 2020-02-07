@@ -5,32 +5,32 @@ import { Upload, notification } from 'antd';
 
 const { Dragger } = Upload;
 
-const onImageUploadSubmit = (data, props, setOldImagePath) => {
+const onVideoUploadSubmit = (data, props, setOldVideoPath) => {
 
-  const { oldImagePath, onChange } = props;
+  const { oldVideoPath, onChange } = props;
   
   const formData = new FormData();
   formData.append('file', data.file);
-  formData.append('directory', 'images');
-  formData.append('oldImagePath', oldImagePath || '');
+  formData.append('directory', 'videos');
+  formData.append('oldVideoPath', oldVideoPath || '');
 
-  axios.post('/api/upload/image', formData, {
+  axios.post('/api/upload/video', formData, {
     headers: {
       'Content-type': 'multipart/form-data'
     }
   })
   .then(res => {
-    setOldImagePath(res.data.filePath);
+    setOldVideoPath(res.data.filePath);
     onChange(res.data.filePath);
     notification['success']({
-      message: 'Obrázek se podařilo nahrát',
-      description: 'Obrázek byl úspěšně nahrán na server.',
+      message: 'Video se podařilo nahrát',
+      description: 'Video bylo úspěšně nahráno na server.',
       placement: 'bottomRight'
     });
   })
   .catch(err => {
     notification['error']({
-      message: 'Obrázek se nepodařilo nahrát',
+      message: 'Video se nepodařilo nahrát',
       description: err.response.data,
       placement: 'bottomRight'
     });
@@ -39,23 +39,23 @@ const onImageUploadSubmit = (data, props, setOldImagePath) => {
 }
 
 
-const UploadArticleImage = props => {
+const UploadArticleVideo = props => {
 
-  const [oldImagePath, setOldImagePath] = useState(props.oldImagePath);
+  const [oldVideoPath, setOldVideoPath] = useState(props.oldVideoPath);
 
-  const imageUploadProps = {
+  const videoUploadProps = {
     name: 'file',
     multiple: false,
     showUploadList: false,
     customRequest: 
-      data => onImageUploadSubmit(data, props, setOldImagePath)
+      data => onVideoUploadSubmit(data, props, setOldVideoPath)
   }
 
   return (
-    <Dragger {...imageUploadProps}>
+    <Dragger {...videoUploadProps}>
       <p className="ant-upload-drag-icon">
         
-        {!oldImagePath 
+        {!oldVideoPath 
           ? (
             <FontAwesomeIcon
               icon="cloud-upload-alt"
@@ -63,11 +63,9 @@ const UploadArticleImage = props => {
             />
           )
           : (
-            <img 
-              src={oldImagePath} 
-              alt="Image"
-              style={{maxWidth: '128px'}}
-            />
+            <video width="240" height="160" controls>
+              <source src={oldVideoPath} type="video/mp4" />
+            </video>
           )
         }
         
@@ -79,4 +77,4 @@ const UploadArticleImage = props => {
   );
 };
 
-export default UploadArticleImage;
+export default UploadArticleVideo;

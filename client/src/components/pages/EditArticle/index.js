@@ -10,7 +10,8 @@ class EditArticle extends React.Component {
     content: '',
     thumbnailImagePath: '',
     coverImagePath: '',
-    isFetching: true
+    isFetching: true,
+    draft: false
   };
 
   setImageThumbnailPath = path => this.setState({ thumbnailImagePath: path });
@@ -21,8 +22,8 @@ class EditArticle extends React.Component {
     console.log(this.props.match.params.id);
     axios.get(`/api/articles/${this.props.match.params.id}`)
     .then(res => {
-      const { title, content, thumbnailImagePath, coverImagePath } = res.data;
-      this.setState({ title, content, thumbnailImagePath, coverImagePath, isFetching: false });
+      const { title, content, thumbnailImagePath, coverImagePath, draft } = res.data;
+      this.setState({ title, content, thumbnailImagePath, coverImagePath, isFetching: false, draft });
     })
     .catch(err => {
       notification['error']({
@@ -34,10 +35,10 @@ class EditArticle extends React.Component {
     });
   }
 
-  saveArticle = () => {
+  saveArticle = (isArticleDraft) => {
     const { title, content, thumbnailImagePath, coverImagePath } = this.state;
     axios.put(`/api/articles/${this.props.match.params.id}`,
-      { title, content, thumbnailImagePath, coverImagePath })
+      { title, content, thumbnailImagePath, coverImagePath, draft: isArticleDraft })
       .then(() => {
         notification['success']({
           message: 'Článek byl úspěšně upraven',
@@ -61,7 +62,9 @@ class EditArticle extends React.Component {
     return (
       <>
         <div className="dt-page__header">
-          <h1 className="dt-page__title">Editace článku</h1>
+          <h1 className="dt-page__title">
+            Editace článku {this.state.draft && <small><i>Koncept</i></small>}
+          </h1>
         </div>
 
         {isFetching ? (
@@ -105,11 +108,12 @@ class EditArticle extends React.Component {
                 <button
                   type="button"
                   className="btn btn-light mr-2 mb-2"
+                  onClick={() => this.saveArticle(true)}
                 >Uložit jako koncept</button>
                 <button
                   type="button"
                   className="btn btn-dark mr-2 mb-2"
-                  onClick={() => this.saveArticle()}
+                  onClick={() => this.saveArticle(false)}
                 >Uložit</button>
               </div>
 
