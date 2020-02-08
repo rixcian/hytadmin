@@ -96,7 +96,7 @@ const UploadThumbnails = props => {
 
   const UploadButton = props => (
     <div>
-      <Icon type={thumbnailLoading ? 'loading' : 'plus'} />
+      <Icon type={thumbnailLoading || coverLoading ? 'loading' : 'plus'} />
       <div className="ant-upload-text mt-2">{props.buttonText}</div>
     </div>
   );

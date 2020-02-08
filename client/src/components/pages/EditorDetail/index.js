@@ -23,8 +23,9 @@ class EditorDetail extends React.Component {
     numberOfPages: 1
   };
 
-  componentDidMount() {
-    const { id: editorID } = this.props.match.params;
+  fetchUser = editorID => {
+    this.setState({ isFetching: true });
+
     axios.get(`/api/users/${editorID}`).then(res => {
       const { allArticlesCount, editor } = res.data;
       this.setState({
@@ -34,6 +35,13 @@ class EditorDetail extends React.Component {
         numberOfPages: Math.ceil(allArticlesCount / this.state.articlesLimit)
       });
     });
+  }
+
+  componentDidMount = () => this.fetchUser(this.props.match.params.id);
+
+  componentDidUpdate = prevProps => {
+    if (prevProps.match.params.id !== this.props.match.params.id)
+      this.fetchUser(this.props.match.params.id)
   }
 
   onPageChange = numOfPage => {
