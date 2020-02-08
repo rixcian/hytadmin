@@ -20,8 +20,6 @@ class Sidebar extends React.Component {
         !this.sidebarRef.current.contains(e.target) &&
         this.props.sidebar &&
         window.innerWidth <= 1200) {
-      console.log('Click outside of a sidebar ...');
-      console.log(e.target.classList);
       if (!e.target.classList.contains('icon-menu-fold')) {
         this.props.toggleSidebar(false);
       }

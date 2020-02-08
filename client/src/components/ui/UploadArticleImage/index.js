@@ -65,7 +65,7 @@ const UploadArticleImage = props => {
           : (
             <img 
               src={oldImagePath} 
-              alt="Image"
+              alt="Article"
               style={{maxWidth: '128px'}}
             />
           )

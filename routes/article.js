@@ -88,7 +88,9 @@ module.exports = app => {
   app.put('/api/articles/:articleID', requireLogin, (req, res) => {
 
     const { articleID } = req.params;
-    const { title, content, thumbnailImagePath, coverImagePath, draft } = req.body;
+    const { title, articleContent: content, thumbnailImagePath, coverImagePath, draft } = req.body;
+
+    console.log(content);
 
     Article.findOneAndUpdate({ _id: articleID },
       { title, content, thumbnailImagePath, coverImagePath , updatedAt: new Date(), draft },

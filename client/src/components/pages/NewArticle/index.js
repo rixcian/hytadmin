@@ -14,13 +14,11 @@ class NewArticle extends React.Component {
     super(props);
     this.state = {
       title: '',
-      indexer: 0,
       articleContent: [],
       thumbnailImagePath: '',
       coverImagePath: '',
       showAddOptions: false,
     }
-    this.addItemsRef = React.createRef();
   }
 
   setImageThumbnailPath = path => this.setState({ thumbnailImagePath: path });
@@ -47,7 +45,6 @@ class NewArticle extends React.Component {
   };
 
   itemChanged = (item, index) => {
-    console.log('change');
     let newContentList = this.state.contentList;
     newContentList[index] = item;
     this.setState({ contentList: newContentList });
@@ -55,22 +52,21 @@ class NewArticle extends React.Component {
 
   addArticleItem = (type, content) => {
     let item = {
-      id: this.state.indexer++,
+      id: Math.random().toString(36).substring(8),
       type: type,
       content: content,
       visible: false
     };
-
-    this.setState({ indexer: this.state.indexer });
 
     let newArticleContent = this.state.articleContent;
     newArticleContent.push(item);
     this.setState({ articleContent: newArticleContent });
   }
 
-  deleteArticleItem = item => {
-    const itemIndex = this.state.articleContent.indexOf(item);
+  deleteArticleItem = itemToDelete => {
     let newArticleContent = this.state.articleContent;
+    let itemIndex = newArticleContent.findIndex(item => item.id === itemToDelete.id);
+    
     newArticleContent.splice(itemIndex, 1);
     this.setState({ articleContent: newArticleContent });
   }
@@ -97,7 +93,7 @@ class NewArticle extends React.Component {
             </div>
 
             <div className="form-group">
-              <label>Náhledové obrázky</label>
+              <label className="mb-5">Náhledové obrázky</label>
               <UploadThumbnails
                 setImageThumbnailPath={path => this.setImageThumbnailPath(path)}
                 setImageCoverPath={path => this.setImageCoverPath(path)}
@@ -120,11 +116,9 @@ class NewArticle extends React.Component {
                   className="btn btn-dark ml-2"
                   onClick={() => { 
                     if (this.state.showAddOptions) {
-                      //this.addItemsRef.current.style.opacity = 0;
                       this.setState({ showAddOptions: false });
                     }
                     else {
-                      //this.addItemsRef.current.style.opacity = 1;
                       this.setState({ showAddOptions: true });
                     }
                    }}
@@ -132,8 +126,8 @@ class NewArticle extends React.Component {
                   {this.state.showAddOptions ? "-" : "+"}
                 </button>
 
-                <div ref={this.addItemsRef} className="add-article-items">
-                <div 
+                <div className="add-article-items">
+                  <div 
                     className={this.state.showAddOptions ? "add-article-item fadeIn delay0" : "add-article-item fadeOut delay30"}
                     onClick={() => this.addArticleItem('heading', '')}
                     >Nadpis</div>
