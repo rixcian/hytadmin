@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { Upload, Icon, notification } from "antd";
 
-export default props => {
+const UploadThumbnails = props => {
   const [thumbnailFile, setThumbnailFile] = useState('');
   const [uploadedThumbnailFile, setUploadedThumbnailFile] = useState({});
   const [thumbnailLoading, setThumbnailLoading] = useState(false);
@@ -146,3 +146,5 @@ export default props => {
     </div>
   )
 }
+
+export default UploadThumbnails;

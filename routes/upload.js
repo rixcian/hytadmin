@@ -74,7 +74,7 @@ module.exports = app => {
     // We're checking if the user replacing avatar image with new one
     if (oldAvatarPath !== '') {
       let oldAvatar = oldAvatarPath.split('/api/uploads/').pop();
-      console.log(oldAvatar);
+
       if (oldAvatar !== 'avatars/default/default_avatar.png') {
         fsPromises.unlink(path.join(__dirname, '../uploads', oldAvatar))
             .catch(err => console.log(err));
@@ -172,8 +172,6 @@ module.exports = app => {
 
 
   app.post('/api/upload/video', requireLogin, (req, res) => {
-
-    console.log(req.files);
     
     // We're checking if client is sending some file to save
     if (!req.files) 

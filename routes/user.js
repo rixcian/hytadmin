@@ -12,7 +12,8 @@ module.exports = app => {
 
     const { skip, limit } = req.params;
 
-    const editors = await User.find({ role: 'redaktor' })
+    // Find all other users except the user who is logged in
+    const editors = await User.find({ _id: { $ne: req.user._id } })
       .skip(parseInt(skip))
       .limit(parseInt(limit))
       .select('_id username email role createdAt active')

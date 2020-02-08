@@ -19,6 +19,11 @@ class NewArticle extends React.Component {
       coverImagePath: '',
       showAddOptions: false,
     }
+    this.newArticleItemButtons = React.createRef();
+  }
+
+  componentDidMount() {
+    this.newArticleItemButtons.current.style.display = 'none';
   }
 
   setImageThumbnailPath = path => this.setState({ thumbnailImagePath: path });
@@ -71,6 +76,19 @@ class NewArticle extends React.Component {
     this.setState({ articleContent: newArticleContent });
   }
 
+  toggleAddArticleItemOptions = () => {
+    if (this.state.showAddOptions) {
+      this.setState({ showAddOptions: false });
+      setTimeout(() => {
+        this.newArticleItemButtons.current.style.display = 'none';
+      }, 450);
+    }
+    else {
+      this.newArticleItemButtons.current.style.display = '';
+      this.setState({ showAddOptions: true });
+    }
+  }
+
   render() {
     return (
       <>
@@ -114,19 +132,12 @@ class NewArticle extends React.Component {
                 <button
                   type="button"
                   className="btn btn-dark ml-2"
-                  onClick={() => { 
-                    if (this.state.showAddOptions) {
-                      this.setState({ showAddOptions: false });
-                    }
-                    else {
-                      this.setState({ showAddOptions: true });
-                    }
-                   }}
+                  onClick={this.toggleAddArticleItemOptions}
                 >
                   {this.state.showAddOptions ? "-" : "+"}
                 </button>
 
-                <div className="add-article-items">
+                <div ref={this.newArticleItemButtons} className="add-article-items">
                   <div 
                     className={this.state.showAddOptions ? "add-article-item fadeIn delay0" : "add-article-item fadeOut delay30"}
                     onClick={() => this.addArticleItem('heading', '')}

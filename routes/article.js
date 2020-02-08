@@ -1,7 +1,32 @@
 const requireLogin = require('../middlewares/requireLogin');
 const mongoose = require('mongoose');
+const path = require('path');
+const fsPromises = require('fs').promises;
 
 const Article = mongoose.model('Article');
+
+const deleteAllFiles = filesToDelete => 
+  new Promise((resolve, reject) => {
+
+    const errors = [];
+
+    if (filesToDelete.length !== 0) {
+      filesToDelete.forEach(filePath => {
+        let finalFilePath = filePath.split('/api/uploads/').pop();
+        fsPromises.unlink(path.join(__dirname, '../uploads', finalFilePath))
+          .catch(err => errors.push(err));
+      });          
+    }
+
+    if (errors.length === 0) {
+      resolve()
+    } else {
+      reject(errors);
+    }
+
+  }
+);
+
 
 module.exports = app => {
 
@@ -56,19 +81,55 @@ module.exports = app => {
     res.send('success');
   });
 
+
   app.delete('/api/articles/:articleID', requireLogin, (req, res) => {
 
     const { articleID } = req.params;
+    const filesToDelete = [];
 
-    Article.findOneAndDelete({ _id: articleID })
-    .then(() => {
-      res.status(204).send();
-    })
-    .catch(() => {
-      res.status(404).send({ err: 'Článek nebyl v databázi nalezen' });
-    });
+    Article.findOne({ _id: articleID })
+      .select('thumbnailImagePath coverImagePath content')
+      .then(article => {
+
+        // We're checking if thumbnail exists
+        if (article.thumbnailImagePath)
+          filesToDelete.push(article.thumbnailImagePath);
+        
+        // We're checking if cover exists
+        if (article.coverImagePath)
+          filesToDelete.push(article.coverImagePath);
+
+        // We're checking if article has some content
+        if (article.content) {
+          article.content.forEach(item => {
+            if (item.type === 'image' || item.type === 'video')
+              item.content && filesToDelete.push(item.content)
+          })
+        }
+
+        // Calling function to delete all files (images, videos) connected with article
+        deleteAllFiles(filesToDelete)
+          .then(() => {
+            
+            // Finally we're deleting article from database
+            Article.findOneAndDelete({ _id: articleID })
+              .then(() => {
+                res.status(204).send();
+              })
+              .catch(() => {
+                res.status(404).send({ err: 'Článek nebyl v databázi nalezen' });
+              });
+
+          })
+          .catch(errors => res.status(500).send({ err: errors }));
+        
+      })
+      .catch(() => {
+        res.status(404).send({ err: 'Článek nebyl v databázi nalezen' });
+      })
 
   });
+
 
   app.get('/api/articles/:articleID', requireLogin, (req, res) => {
 
@@ -85,12 +146,11 @@ module.exports = app => {
 
   });
 
+
   app.put('/api/articles/:articleID', requireLogin, (req, res) => {
 
     const { articleID } = req.params;
     const { title, articleContent: content, thumbnailImagePath, coverImagePath, draft } = req.body;
-
-    console.log(content);
 
     Article.findOneAndUpdate({ _id: articleID },
       { title, content, thumbnailImagePath, coverImagePath , updatedAt: new Date(), draft },
