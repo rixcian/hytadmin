@@ -33,13 +33,16 @@ module.exports = app => {
   app.post('/api/articles', requireLogin, async (req, res) => {
 
     const { title, articleContent, thumbnailImagePath, coverImagePath, draft } = req.body;
+
+    if (!title || !thumbnailImagePath || !coverImagePath)
+      return res.status(400).send({ err: 'Nezadali jste všechny parametry' });
     
     await new Article({
       title,
       thumbnailImagePath,
       coverImagePath,
       author: req.user.id,
-      content: articleContent,
+      content: articleContent || [],
       draft
     }).save();
 
@@ -68,6 +71,7 @@ module.exports = app => {
       .populate('author', '_id username')
       .skip(parseInt(skip))
       .limit(parseInt(limit))
+      .select('-__v -content')
       .exec();
     
     const allArticlesCount = await Article.countDocuments();
@@ -151,6 +155,9 @@ module.exports = app => {
 
     const { articleID } = req.params;
     const { title, articleContent: content, thumbnailImagePath, coverImagePath, draft } = req.body;
+
+    if (!title || !thumbnailImagePath || !coverImagePath)
+      return res.status(400).send({ err: 'Nezadali jste všechny parametry' });
 
     Article.findOneAndUpdate({ _id: articleID },
       { title, content, thumbnailImagePath, coverImagePath , updatedAt: new Date(), draft },

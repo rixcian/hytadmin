@@ -30,7 +30,7 @@ module.exports = app => {
     const { directory, oldThumbnailPath, oldCoverPath } = req.body;
     
     // We're checking if client enter all needed values
-    if (!directory) 
+    if (!directory || typeof oldThumbnailPath === 'undefined' || typeof oldCoverPath === 'undefined') 
       return res.status(400).send({ err: 'Nezadali jste všechny parametry' });
 
     // We're checking if the user replacing thumbnail image with new one
@@ -66,10 +66,15 @@ module.exports = app => {
 
   app.post('/api/upload/avatar', requireLogin, (req, res) => {
 
-    if (req.files === null) return res.status(400).send({ err: 'Žádný soubor k nahrání' });
+    // We're checking if client is sending some file to save
+    if (!req.files) return res.status(400).send({ err: 'Žádný soubor k nahrání' });
 
     const { file } = req.files;
     const { oldAvatarPath } = req.body;
+
+    // We're checking if client enter all needed values
+    if (typeof oldAvatarPath === 'undefined') 
+      return res.status(400).send({ err: 'Nezadali jste všechny parametry' });
 
     // We're checking if the user replacing avatar image with new one
     if (oldAvatarPath !== '') {

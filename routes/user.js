@@ -85,9 +85,13 @@ module.exports = app => {
   app.delete('/api/users/:editorID', requireLogin, requireAdmin, (req, res) => {
       const _id = req.params.editorID;
 
-      User.findOneAndDelete({ _id })
-          .then(() => {
-              res.status(204).send();
+      User.findOneAndDelete({ _id: _id })
+          .then((data) => {
+              if (data) {
+                res.status(204).send();
+              } else {
+                res.status(404).send({ err: 'Redaktor nebyl v databázi nalezen' });
+              }
           })
           .catch(() => {
               res.status(404).send({ err: 'Redaktor nebyl v databázi nalezen' });

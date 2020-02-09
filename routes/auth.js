@@ -38,13 +38,17 @@ module.exports = app => {
 
   app.post('/api/register', async (req, res) => {
     const { email, username, role, password } = req.body;
+
+    if (!email || !username || !role || !password)
+      res.status(400).send({ err: 'Nezadali jste všechny parametry' })
+
     const user = await User.findOne({ $or: [{ email }, { username }] });
     if (user) return res.status(409).send({ err: 'Uživatel s touto emailovou adresou nebo jménem již existuje.' });
 
     bcrypt.hash(password, 10, async (err, hash) => {
       if (err) return res.status(500).send({ err: 'Vnitřní chyba serveru.' });
       await new User({ email, username, role, password: hash, avatarPath: "/api/uploads/avatars/default/default_avatar.png" }).save();
-      res.status(201).send({ err: null });
+      res.status(201).send();
     });
   });
 
