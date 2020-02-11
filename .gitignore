@@ -1,5 +1,5 @@
 server/node_modules
 server/config/keys.js
 .idea
-server/uploads
+server/uploads/*
 deploy.sh
