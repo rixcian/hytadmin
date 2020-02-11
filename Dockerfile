@@ -1,10 +1,14 @@
 FROM node:12.14
 
-WORKDIR /usr/src/app
+COPY ./client /usr/src/app/client
 
-COPY  ./client/build ./client/build
+COPY ./server /usr/src/app/server
 
-COPY ./server/ ./server
+WORKDIR /usr/src/app/client
+
+RUN yarn install
+
+RUN yarn run build
 
 WORKDIR /usr/src/app/server
 
