@@ -1,7 +1,8 @@
 server/node_modules
 server/config/keys.js
 .idea
-server/uploads/avatars
+server/uploads/avatars/*
+!server/uploads/avatars/default
 server/uploads/covers
 server/uploads/images
 server/uploads/thumbnails
