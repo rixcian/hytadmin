@@ -14,7 +14,7 @@ require('./models/User');
 require('./models/Article');
 
 mongoose.connect(
-  keys.getMongoDBAddress(), { useNewUrlParser: true })
+  keys.getMongoDBAddress(process.env.NODE_ENV), { useNewUrlParser: true })
   .then(() => console.log('[INFO]'.blue, 'Server was successfully connected to MongoDB ... '))
   .catch(err => console.log('[ERROR]\n'.red, err));
     
