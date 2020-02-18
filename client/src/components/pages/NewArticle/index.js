@@ -43,7 +43,7 @@ class NewArticle extends React.Component {
     .catch(err => {
       notification['error']({
         message: 'Článek se nepodařilo nahrát',
-        description: err.response.data,
+        description: err.response.data || '',
         placement: 'bottomRight'
       });
     })
@@ -101,7 +101,7 @@ class NewArticle extends React.Component {
             <div className="form-group">
               <label htmlFor="email-1">Nadpis</label>
               <input
-                type="email"
+                type="text"
                 className="form-control"
                 value={this.state.title}
                 onChange={(e) => this.setState({ title: e.target.value })}

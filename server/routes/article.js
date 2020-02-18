@@ -37,16 +37,32 @@ module.exports = app => {
     if (!title || !thumbnailImagePath || !coverImagePath)
       return res.status(400).send({ err: 'Nezadali jste všechny parametry' });
     
-    await new Article({
-      title,
-      thumbnailImagePath,
-      coverImagePath,
-      author: req.user.id,
-      content: articleContent || [],
-      draft
-    }).save();
+    // Generating uriName
+    const generatedNumber = Math.floor((Math.random() * 9000) + 1000).toString();
+    let uriName = title.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    uriName = uriName.split(' ').join('-').toLowerCase();
+    uriName = `${uriName}-${generatedNumber}`; 
+    
+    try {
+      
+      await new Article({
+        title,
+        uriName,
+        thumbnailImagePath,
+        coverImagePath,
+        createdAt: new Date(),
+        author: req.user.id,
+        content: articleContent || [],
+        draft
+      }).save();
+  
+      res.status(201).send();
 
-    res.status(201).send();
+    } catch (err) {
+      console.log(err);
+      res.status(500).send({ err: 'Vnitřní chyba serveru' });
+    }
+
 
   });
 

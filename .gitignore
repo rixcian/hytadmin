@@ -8,3 +8,4 @@ server/uploads/images
 server/uploads/thumbnails
 server/uploads/videos
 deploy.sh
+*.md

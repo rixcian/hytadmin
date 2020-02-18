@@ -6,6 +6,10 @@ const articleSchema = new Schema({
     type: String,
     required: true
   },
+  uriName: {
+    type: String,
+    required: true
+  },
   draft: {
     type: Boolean,
     required: false,
